@@ -11,3 +11,8 @@ node index.js "https://your_test_url:port"
 ```
 
 Outputs timings in seconds.
+
+We added another script to compute the average and standard deviation by reading from a file that contains the output of the previous command:
+```
+node parse-results.js <SOME_RESULT_FILE>
+```

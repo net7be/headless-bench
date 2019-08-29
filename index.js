@@ -45,7 +45,7 @@ async function makeTests(url, loops) {
   }
 }
 
-const loops = 20;
+let loops = 20;
 let show = false;
 
 if (process.argv.length < 3) {
@@ -53,11 +53,20 @@ if (process.argv.length < 3) {
   process.exit();
 } else if (process.argv.length > 3) {
   // Look for options:
-  show = process.argv.slice(3).some(v => v.startsWith('-s'));
+  const rest = process.argv.slice(3);
+  const loopPos = rest.findIndex(v => v.startsWith('-l'));
+  if (loopPos >= 0) {
+    const matched = rest.slice(loopPos).join(' ').match(/^-l\s*(\d+)/);
+    if (matched.length > 1) {
+      loops = matched[1];
+    }
+  }
+  show = rest.some(v => v.startsWith('-s'));
 }
 
 const url = process.argv[2];
-console.log(`Testing URL: ${url}\n`);
+console.log(`Testing URL: ${url}`);
+console.log(`Loops: ${loops}\n`);
 
 if (!show) {
   makeTests(url, loops);
